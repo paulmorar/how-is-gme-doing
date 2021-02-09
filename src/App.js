@@ -18,7 +18,7 @@ const App = () => {
     const interval = setInterval(async () => {
       const result = await axios(BASE_URL)
       const percentageChange = result.data.quotes.price.regularMarketChangePercent || 0;
-      const conversionValue = (Math.floor(percentageChange) - percentStart)*(angleEnd-angleStart)/(percentEnd-percentStart) + angleStart;
+      const conversionValue = (Math.floor(percentageChange)*100 - percentStart)*(angleEnd-angleStart)/(percentEnd-percentStart) + angleStart;
       setAngleValue(conversionValue);
     }, 5000);
     return () => clearInterval(interval);
