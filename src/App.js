@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
+import axios from "axios";
 import rocket from './rocket.svg';
 import './App.css';
 
-const BASE_URL = "";
+const BASE_URL = "https://how-is-my-stock-doing.netlify.app/.netlify/functions/api";
 const BASE_ROT_VAL = 45;
-const TICKER = "GME";
 
 const getRandNumber = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 const App = () => {
   const [angleValue, setAngleValue] = useState(0);
 
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     const result = await axios(`${BASE_URL}&symbols=${TICKER}`)
-  //     const percentageChange = result.quoteResponse.result.regularMarketChangePercent || 0;
-  //     console.log({percentageChange, result})
-  //     setAngleValue(getRandNumber(-90, 90))
-  //   }, 3000);
-  //   return () => clearInterval(interval);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const result = await axios(BASE_URL)
+      const percentageChange = result.data.quotes.price.regularMarketChangePercent || 0;
+      setAngleValue(getRandNumber(-90, 90))
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="App">
