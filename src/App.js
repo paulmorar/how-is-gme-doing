@@ -6,7 +6,10 @@ import './App.css';
 const BASE_URL = "https://how-is-my-stock-doing.netlify.app/.netlify/functions/api";
 const BASE_ROT_VAL = 45;
 
-const getRandNumber = (min, max) => Math.floor(Math.random() * (max - min) + min);
+const percentStart = -90;
+const percentEnd = 90;
+const angleStart = -90;
+const angleEnd = 90;
 
 const App = () => {
   const [angleValue, setAngleValue] = useState(0);
@@ -15,7 +18,8 @@ const App = () => {
     const interval = setInterval(async () => {
       const result = await axios(BASE_URL)
       const percentageChange = result.data.quotes.price.regularMarketChangePercent || 0;
-      setAngleValue(getRandNumber(-90, 90))
+      const conversionValue = (Math.floor(percentageChange) - percentStart)*(angleEnd-angleStart)/(percentEnd-percentStart) + angleStart;
+      setAngleValue(conversionValue);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
